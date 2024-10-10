@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #3E4451;
+    color: white;
+    display: flex;
+    user-select: none;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    background-color: #2D2F3A;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+}
+
+.navbar-title {
+    flex-grow: 1;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    text-align: center;
+    font-size: 25px;
+    font-family: "Lilita One", sans-serif;
+}
+
+.floating-box {
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    width: 95%;
+    transform: translateX(-50%);
+    background-color: #FFD700;
+    color: black;
+    padding: 5px;
+    font-size: 10px;
+    border-radius: 5px;
+    z-index: 15;
+    text-align: center;
+}
+
+    .katakana-list {
+      border-radius: 10px;
+      padding: 5px;
+    }
+
+    .katakana-list .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .katakana-list .grid div {
+      padding: 5px;
+      border-radius: 5px;
+      width: 50px;
+      text-align: center;
+      font-size: 10px;
+      cursor: none;
+      background-color: #3A3D48;
+      color: white;
+      transition: background-color 0.3s, color 0.3s, box-shadow 0.1s, transform 0.1s;
+      box-shadow: 0 6px 0 #1A1C23;
+    }
+
+    .katakana-list .grid div:hover {
+      color: #FFD700;
+      box-shadow: 0 3px 0 #1A1C23;
+      transform: translateY(3px);
+    }
+
+    .katakana-list .grid div .katakana {
+      font-size: 20px;
+      display: block;
+    }
+
+    .katakana-list .grid div .romaji {
+      font-size: 10px;
+      color: #FFD700;
+    }
+
+.popup {
+  display: none;
+  top: 30%;
+  left: 10%;
+  position: fixed;
+  background-color: #2E333A;
+  color: white;
+  padding: 40px;
+  width: 80%;
+  height: auto;
+  box-shadow: 0 0 0 4px white;
+  z-index: 1000;
+  text-align: center;
+}
+
+.popup h1 {
+  margin: 0;
+  font-size: 80px;
+  color: #FFD700;
+  letter-spacing: 5px;
+}
+
+.popup p {
+  font-size: 28px;
+  color: #B0BEC5;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.popup .close-btn {
+  background-color: #FF5722;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 5px;
+  cursor: none;
+  margin-top: 30px;
+  transition: background-color 0.3s ease;
+}
+
+.popup .close-btn:hover {
+  background-color: #E64A19;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes zoomOut {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+}
+
+.popup.show {
+  display: flex;
+  animation: zoomIn 0.3s ease forwards;
+}
+
+.popup.hide {
+  animation: zoomOut 0.3s ease forwards;
+}
+
+.container-deks {
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            margin-top: 15%;
+            margin-bottom: 0%;
+        }
+
+        .image-section img {
+            width: 100%;
+            height: auto;
+            margin-top: 5px;
+            margin-bottom: 1px;
+            border-radius: 5px;
+        }
+
+        .content-section {
+            margin-top: 15px;
+        }
+
+        h1 {
+            font-size: 20px;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+        }
+
+        .description {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            font-size: 16px;
+            color: #ddd;
+        }
+
+        .additional-info {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            font-size: 14px;
+            color: #999;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+.line {
+    width: 100%;
+    margin-top: 5px;
+    height: 3px;
+    background-color: #555;
+}
+
+.game-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #F1C232;
+    color: white;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.1s, transform 0.1s;
+    box-shadow: 0 6px 0 #D4A017;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: none;
+    margin-bottom: 5px;
+}
+
+.toltip{
+  font-size: 10px;
+  text-align: center;
+  color: #000;
+  font-family: 'Poppins', sans-serif;
+  background-color: #fff;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  position: relative;
+  padding: 10px;
+}
+
+.toltip:after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 10px;
+  border-style: solid;
+  border-color: #fff transparent transparent transparent;
+}
+
+.game-button:hover {
+    box-shadow: 0 3px 0 #D4A017;
+    transform: translateY(3px);
+}
+
+.info-button {
+    padding: 10px 15px;
+    margin: 0px;
+    border-radius: 5px;
+    border: none;
+    font-size: 10px;
+    font-weight: bold;
+    background-color: #F1C232;
+    color: #fff;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.1s, transform 0.1s;
+    box-shadow: 0 6px 0 #D4A017;
+    font-family: 'Poppins', sans-serif;
+    cursor: none;
+    margin-bottom: 10px;
+}
+
+.info-button:hover {
+    box-shadow: 0 3px 0 #D4A017;
+    transform: translateY(3px);
+}
+
+.back-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #FF5722;
+    color: white;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.1s, transform 0.1s;
+    box-shadow: 0 6px 0 #E64A19;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: none;
+    margin-bottom: 5px;
+}
+
+.back-button:hover {
+    box-shadow: 0 3px 0 #E64A19;
+    transform: translateY(3px);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.container-deks {
+  animation: fadeInUp 2.5s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.floating-box {
+  animation: fadeIn 1s ease-in forwards;
+  opacity: 0;
+}
+</style>
+</head>
+<body>
+   <div class="navbar">
+    <div class="navbar-title">PLIXSTUDENTS</div>
+</div>
+</div>
+    <div class="popup" id="popup">
+      <h1 id="popup-hiragana"></h1>
+      <p id="popup-romaji"></p>
+      <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+  </div>
+<div class="container-deks">
+    <div class="content-section">
+        <div class="line"></div>
+        <h1>Huruf katakana dasar.</h1>
+        <p class="description">Katakana adalah sistem penulisan dalam bahasa Jepang yang digunakan terutama untuk menuliskan kata-kata serapan dari bahasa asing, nama ilmiah, dan beberapa nama tertentu.</p>
+        <div class="katakana-list">
+            <div class="grid">
+                <div onclick="showPopup('ア', 'A')">
+                    <span class="katakana">ア</span>
+                    <span class="romaji">A</span>
+                </div>
+                <div onclick="showPopup('イ', 'I')">
+                    <span class="katakana">イ</span>
+                    <span class="romaji">I</span>
+                </div>
+                <div onclick="showPopup('ウ', 'U')">
+                    <span class="katakana">ウ</span>
+                    <span class="romaji">U</span>
+                </div>
+                <div onclick="showPopup('エ', 'E')">
+                    <span class="katakana">エ</span>
+                    <span class="romaji">E</span>
+                </div>
+                <div onclick="showPopup('オ', 'O')">
+                    <span class="katakana">オ</span>
+                    <span class="romaji">O</span>
+                </div>
+                <div onclick="showPopup('カ', 'KA')">
+                    <span class="katakana">カ</span>
+                    <span class="romaji">KA</span>
+                </div>
+                <div onclick="showPopup('キ', 'KI')">
+                    <span class="katakana">キ</span>
+                    <span class="romaji">KI</span>
+                </div>
+                <div onclick="showPopup('ク', 'KU')">
+                    <span class="katakana">ク</span>
+                    <span class="romaji">KU</span>
+                </div>
+                <div onclick="showPopup('ケ', 'KE')">
+                    <span class="katakana">ケ</span>
+                    <span class="romaji">KE</span>
+                </div>
+                <div onclick="showPopup('コ', 'KO')">
+                    <span class="katakana">コ</span>
+                    <span class="romaji">KO</span>
+                </div>
+                <div onclick="showPopup('サ', 'SA')">
+                    <span class="katakana">サ</span>
+                    <span class="romaji">SA</span>
+                </div>
+                <div onclick="showPopup('シ', 'SHI')">
+                    <span class="katakana">シ</span>
+                    <span class="romaji">SHI</span>
+                </div>
+                <div onclick="showPopup('ス', 'SU')">
+                    <span class="katakana">ス</span>
+                    <span class="romaji">SU</span>
+                </div>
+                <div onclick="showPopup('セ', 'SE')">
+                    <span class="katakana">セ</span>
+                    <span class="romaji">SE</span>
+                </div>
+                <div onclick="showPopup('ソ', 'SO')">
+                    <span class="katakana">ソ</span>
+                    <span class="romaji">SO</span>
+                </div>
+                <div onclick="showPopup('タ', 'TA')">
+                    <span class="katakana">タ</span>
+                    <span class="romaji">TA</span>
+                </div>
+                <div onclick="showPopup('チ', 'CHI')">
+                    <span class="katakana">チ</span>
+                    <span class="romaji">CHI</span>
+                </div>
+                <div onclick="showPopup('ツ', 'TSU')">
+                    <span class="katakana">ツ</span>
+                    <span class="romaji">TSU</span>
+                </div>
+                <div onclick="showPopup('テ', 'TE')">
+                    <span class="katakana">テ</span>
+                    <span class="romaji">TE</span>
+                </div>
+                <div onclick="showPopup('ト', 'TO')">
+                    <span class="katakana">ト</span>
+                    <span class="romaji">TO</span>
+                </div>
+                <div onclick="showPopup('ナ', 'NA')">
+                    <span class="katakana">ナ</span>
+                    <span class="romaji">NA</span>
+                </div>
+                <div onclick="showPopup('ニ', 'NI')">
+                    <span class="katakana">ニ</span>
+                    <span class="romaji">NI</span>
+                </div>
+                <div onclick="showPopup('ヌ', 'NU')">
+                    <span class="katakana">ヌ</span>
+                    <span class="romaji">NU</span>
+                </div>
+                <div onclick="showPopup('ネ', 'NE')">
+                    <span class="katakana">ネ</span>
+                    <span class="romaji">NE</span>
+                </div>
+                <div onclick="showPopup('ノ', 'NO')">
+                    <span class="katakana">ノ</span>
+                    <span class="romaji">NO</span>
+                </div>
+                <div onclick="showPopup('ハ', 'HA')">
+                    <span class="katakana">ハ</span>
+                    <span class="romaji">HA</span>
+                </div>
+                <div onclick="showPopup('ヒ', 'HI')">
+                    <span class="katakana">ヒ</span>
+                    <span class="romaji">HI</span>
+                </div>
+                <div onclick="showPopup('フ', 'FU')">
+                    <span class="katakana">フ</span>
+                    <span class="romaji">FU</span>
+                </div>
+                <div onclick="showPopup('ヘ', 'HE')">
+                    <span class="katakana">ヘ</span>
+                    <span class="romaji">HE</span>
+                </div>
+                <div onclick="showPopup('ホ', 'HO')">
+                    <span class="katakana">ホ</span>
+                    <span class="romaji">HO</span>
+                </div>
+                <div onclick="showPopup('マ', 'MA')">
+                    <span class="katakana">マ</span>
+                    <span class="romaji">MA</span>
+                </div>
+                <div onclick="showPopup('ミ', 'MI')">
+                    <span class="katakana">ミ</span>
+                    <span class="romaji">MI</span>
+                </div>
+                <div onclick="showPopup('ム', 'MU')">
+                    <span class="katakana">ム</span>
+                    <span class="romaji">MU</span>
+                </div>
+                <div onclick="showPopup('メ', 'ME')">
+                    <span class="katakana">メ</span>
+                    <span class="romaji">ME</span>
+                </div>
+                <div onclick="showPopup('モ', 'MO')">
+                    <span class="katakana">モ</span>
+                    <span class="romaji">MO</span>
+                </div>
+                <div onclick="showPopup('ヤ', 'YA')">
+                    <span class="katakana">ヤ</span>
+                    <span class="romaji">YA</span>
+                </div>
+                <div onclick="showPopup('ユ', 'YU')">
+                    <span class="katakana">ユ</span>
+                    <span class="romaji">YU</span>
+                </div>
+                <div onclick="showPopup('ヨ', 'YO')">
+                    <span class="katakana">ヨ</span>
+                    <span class="romaji">YO</span>
+                </div>
+                <div onclick="showPopup('ラ', 'RA')">
+                    <span class="katakana">ラ</span>
+                    <span class="romaji">RA</span>
+                </div>
+                <div onclick="showPopup('リ', 'RI')">
+                    <span class="katakana">リ</span>
+                    <span class="romaji">RI</span>
+                </div>
+                <div onclick="showPopup('ル', 'RU')">
+                    <span class="katakana">ル</span>
+                    <span class="romaji">RU</span>
+                </div>
+                <div onclick="showPopup('レ', 'RE')">
+                    <span class="katakana">レ</span>
+                    <span class="romaji">RE</span>
+                </div>
+                <div onclick="showPopup('ロ', 'RO')">
+                    <span class="katakana">ロ</span>
+                    <span class="romaji">RO</span>
+                </div>
+                <div onclick="showPopup('ワ', 'WA')">
+                    <span class="katakana">ワ</span>
+                    <span class="romaji">WA</span>
+                </div>
+                <div onclick="showPopup('ヲ', 'WO')">
+                    <span class="katakana">ヲ</span>
+                    <span class="romaji">WO</span>
+                </div>
+                <div onclick="showPopup('ン', 'N')">
+                    <span class="katakana">ン</span>
+                    <span class="romaji">N</span>
+                </div>
+            </div>
+            <p class="additional-info">Klik tombol di bawah ini untuk quiz tebak tebakan huruf katakana untuk menambah penghafalan dalam huruf japan.</p>
+            <p class="toltip">Permainan Quiz masih dalam pengembangan.</p>
+            <button class="game-button">Permainan Quiz</button>
+        </div>
+        <div class="line"></div>
+         <div class="image-section">
+            <img src="https://via.placeholder.com/1000x250" alt="Gambar Artikel">
+        </div>
+        <p class="description">huruf katakana yang ditandai dengan tanda dakuten (") dan maru (°).</p>
+        <div class="katakana-list">
+            <div class="grid">
+                <div onclick="showPopup('ガ', 'GA')">
+                    <span class="katakana">ガ</span>
+                    <span class="romaji">GA</span>
+                </div>
+                <div onclick="showPopup('ギ', 'GI')">
+                    <span class="katakana">ギ</span>
+                    <span class="romaji">GI</span>
+                </div>
+                <div onclick="showPopup('グ', 'GU')">
+                    <span class="katakana">グ</span>
+                    <span class="romaji">GU</span>
+                </div>
+                <div onclick="showPopup('ゲ', 'GE')">
+                    <span class="katakana">ゲ</span>
+                    <span class="romaji">GE</span>
+                </div>
+                <div onclick="showPopup('ゴ', 'GO')">
+                    <span class="katakana">ゴ</span>
+                    <span class="romaji">GO</span>
+                </div>
+                <div onclick="showPopup('ザ', 'ZA')">
+                    <span class="katakana">ザ</span>
+                    <span class="romaji">ZA</span>
+                </div>
+                <div onclick="showPopup('ジ', 'JI')">
+                    <span class="katakana">ジ</span>
+                    <span class="romaji">JI</span>
+                </div>
+                <div onclick="showPopup('ズ', 'ZU')">
+                    <span class="katakana">ズ</span>
+                    <span class="romaji">ZU</span>
+                </div>
+                <div onclick="showPopup('ゼ', 'ZE')">
+                    <span class="katakana">ゼ</span>
+                    <span class="romaji">ZE</span>
+                </div>
+                <div onclick="showPopup('ゾ', 'ZO')">
+                    <span class="katakana">ゾ</span>
+                    <span class="romaji">ZO</span>
+                </div>
+                <div onclick="showPopup('ダ', 'DA')">
+                    <span class="katakana">ダ</span>
+                    <span class="romaji">DA</span>
+                </div>
+                <div onclick="showPopup('ヂ', 'JI')">
+                    <span class="katakana">ヂ</span>
+                    <span class="romaji">JI</span>
+                </div>
+                <div onclick="showPopup('ヅ', 'ZU')">
+                    <span class="katakana">ヅ</span>
+                    <span class="romaji">ZU</span>
+                </div>
+                <div onclick="showPopup('デ', 'DE')">
+                    <span class="katakana">デ</span>
+                    <span class="romaji">DE</span>
+                </div>
+                <div onclick="showPopup('ド', 'DO')">
+                    <span class="katakana">ド</span>
+                    <span class="romaji">DO</span>
+                </div>
+                <div onclick="showPopup('バ', 'BA')">
+                    <span class="katakana">バ</span>
+                    <span class="romaji">BA</span>
+                </div>
+                <div onclick="showPopup('ビ', 'BI')">
+                    <span class="katakana">ビ</span>
+                    <span class="romaji">BI</span>
+                </div>
+                <div onclick="showPopup('ブ', 'BU')">
+                    <span class="katakana">ブ</span>
+                    <span class="romaji">BU</span>
+                </div>
+                <div onclick="showPopup('ベ', 'BE')">
+                    <span class="katakana">ベ</span>
+                    <span class="romaji">BE</span>
+                </div>
+                <div onclick="showPopup('ボ', 'BO')">
+                    <span class="katakana">ボ</span>
+                    <span class="romaji">BO</span>
+                </div>
+                <div onclick="showPopup('パ', 'PA')">
+                    <span class="katakana">パ</span>
+                    <span class="romaji">PA</span>
+                </div>
+                <div onclick="showPopup('ピ', 'PI')">
+                    <span class="katakana">ピ</span>
+                    <span class="romaji">PI</span>
+                </div>
+                <div onclick="showPopup('プ', 'PU')">
+                    <span class="katakana">プ</span>
+                    <span class="romaji">PU</span>
+                </div>
+                <div onclick="showPopup('ペ', 'PE')">
+                    <span class="katakana">ペ</span>
+                    <span class="romaji">PE</span>
+                </div>
+                <div onclick="showPopup('ポ', 'PO')">
+                    <span class="katakana">ポ</span>
+                    <span class="romaji">PO</span>
+                </div>
+            </div>
+            </div>
+         <div class="line"></div>
+         <div class="image-section">
+            <img src="https://via.placeholder.com/1000x250" alt="Gambar Artikel">
+        </div>
+        <p class="description">Partikel Katakana kecil digunakan untuk menuliskan kombinasi konsonan + vokal seperti "Kya," "Kyu," "Kyo," dan lainnya dalam bahasa Jepang.</p>
+        <div class="katakana-list">
+            <div class="grid">
+                <div onclick="showPopup('キャ', 'KYA')">
+                    <span class="katakana">キャ</span>
+                    <span class="romaji">KYA</span>
+                </div>
+                <div onclick="showPopup('キュ', 'KYU')">
+                    <span class="katakana">キュ</span>
+                    <span class="romaji">KYU</span>
+                </div>
+                <div onclick="showPopup('キョ', 'KYO')">
+                    <span class="katakana">キョ</span>
+                    <span class="romaji">KYO</span>
+                </div>
+                <div onclick="showPopup('シャ', 'SHA')">
+                    <span class="katakana">シャ</span>
+                    <span class="romaji">SHA</span>
+                </div>
+                <div onclick="showPopup('シュ', 'SHU')">
+                    <span class="katakana">シュ</span>
+                    <span class="romaji">SHU</span>
+                </div>
+                <div onclick="showPopup('ショ', 'SHO')">
+                    <span class="katakana">ショ</span>
+                    <span class="romaji">SHO</span>
+                </div>
+                <div onclick="showPopup('チャ', 'CHA')">
+                    <span class="katakana">チャ</span>
+                    <span class="romaji">CHA</span>
+                </div>
+                <div onclick="showPopup('チュ', 'CHU')">
+                    <span class="katakana">チュ</span>
+                    <span class="romaji">CHU</span>
+                </div>
+                <div onclick="showPopup('チョ', 'CHO')">
+                    <span class="katakana">チョ</span>
+                    <span class="romaji">CHO</span>
+                </div>
+                <div onclick="showPopup('ニャ', 'NYA')">
+                    <span class="katakana">ニャ</span>
+                    <span class="romaji">NYA</span>
+                </div>
+                <div onclick="showPopup('ニュ', 'NYU')">
+                    <span class="katakana">ニュ</span>
+                    <span class="romaji">NYU</span>
+                </div>
+                <div onclick="showPopup('ニョ', 'NYO')">
+                    <span class="katakana">ニョ</span>
+                    <span class="romaji">NYO</span>
+                </div>
+                <div onclick="showPopup('ヒャ', 'HYA')">
+                    <span class="katakana">ヒャ</span>
+                    <span class="romaji">HYA</span>
+                </div>
+                <div onclick="showPopup('ヒュ', 'HYU')">
+                    <span class="katakana">ヒュ</span>
+                    <span class="romaji">HYU</span>
+                </div>
+                <div onclick="showPopup('ヒョ', 'HYO')">
+                    <span class="katakana">ヒョ</span>
+                    <span class="romaji">HYO</span>
+                </div>
+                <div onclick="showPopup('ミャ', 'MYA')">
+                    <span class="katakana">ミャ</span>
+                    <span class="romaji">MYA</span>
+                </div>
+                <div onclick="showPopup('ミュ', 'MYU')">
+                    <span class="katakana">ミュ</span>
+                    <span class="romaji">MYU</span>
+                </div>
+                <div onclick="showPopup('ミョ', 'MYO')">
+                    <span class="katakana">ミョ</span>
+                    <span class="romaji">MYO</span>
+                </div>
+                <div onclick="showPopup('リャ', 'RYA')">
+                    <span class="katakana">リャ</span>
+                    <span class="romaji">RYA</span>
+                </div>
+                <div onclick="showPopup('リュ', 'RYU')">
+                    <span class="katakana">リュ</span>
+                    <span class="romaji">RYU</span>
+                </div>
+                <div onclick="showPopup('リョ', 'RYO')">
+                    <span class="katakana">リョ</span>
+                    <span class="romaji">RYO</span>
+                </div>
+            </div>
+        </div>
+ <div class="line"></div>
+<p class="additional-info">Klik tombol di bawah ini untuk masukan untuk update kedepan dan apa ada kekurangan yang ingin kami perbaiki dan update.</p>
+            <center><button class="info-button" onclick="sendEmail()">BUAT MASUKAN SARAN</button>
+            <button class="info-button" onclick="refreshPage()">REFRESH MENGECEK UPDATE</button></center>
+            <button class="back-button" onclick="goBack()">Kembali ke halaman utama</button>
+        </div>
+        <div class="line"></div>
+</div>
+</div>
+    <div class="floating-box">
+    Jangan lupa geser dan klik refresh untuk mengecek update.
+</div>
+   <script>
+    function showPopup(hiragana, romaji) {
+  const popup = document.getElementById('popup');
+  document.getElementById('popup-hiragana').textContent = hiragana;
+  document.getElementById('popup-romaji').textContent = romaji;
+  popup.classList.remove('hide');
+  popup.style.display = 'block';
+  popup.classList.add('show');
+}
+
+function closePopup() {
+  const popup = document.getElementById('popup');
+  popup.classList.remove('show');
+  popup.classList.add('hide');
+
+  popup.addEventListener('animationend', function() {
+    if (popup.classList.contains('hide')) {
+      popup.style.display = 'none';
+    }
+  }, { once: true });
+}
+  </script>
+  <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+
+        function sendEmail() {
+            const email = "plixsuport@gmail.com";
+            const subject = "Chat from PLIXSTUDENTS";
+            const body = "Please find the chat information here.";
+            window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        }
+
+        function refreshPage() {
+            location.reload();
+        }
+    </script>
+   
+</body>
+</html>
