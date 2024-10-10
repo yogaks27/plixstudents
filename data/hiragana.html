@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #3E4451;
+    color: white;
+    display: flex;
+    user-select: none;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    background-color: #2D2F3A;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+}
+
+.navbar-title {
+    flex-grow: 1;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    text-align: center;
+    font-size: 25px;
+    font-family: "Lilita One", sans-serif;
+}
+
+.floating-box {
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    width: 95%;
+    transform: translateX(-50%);
+    background-color: #FFD700;
+    color: black;
+    padding: 5px;
+    font-size: 10px;
+    border-radius: 5px;
+    z-index: 15;
+    text-align: center;
+}
+
+    .hiragana-list {
+      border-radius: 10px;
+      padding: 5px;
+    }
+
+    .hiragana-list .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .hiragana-list .grid div {
+      padding: 5px;
+      border-radius: 5px;
+      width: 50px;
+      text-align: center;
+      font-size: 10px;
+      cursor: none;
+      background-color: #3A3D48;
+      color: white;
+      transition: background-color 0.3s, color 0.3s, box-shadow 0.1s, transform 0.1s;
+      box-shadow: 0 6px 0 #1A1C23;
+    }
+
+    .hiragana-list .grid div:hover {
+      color: #FFD700;
+      box-shadow: 0 3px 0 #1A1C23;
+      transform: translateY(3px);
+    }
+
+    .hiragana-list .grid div .hiragana {
+      font-size: 20px;
+      display: block;
+    }
+
+    .hiragana-list .grid div .romaji {
+      font-size: 10px;
+      color: #FFD700;
+    }
+
+.popup {
+  display: none;
+  top: 30%;
+  left: 10%;
+  position: fixed;
+  background-color: #2E333A;
+  color: white;
+  padding: 40px;
+  width: 80%;
+  height: auto;
+  box-shadow: 0 0 0 4px white;
+  z-index: 1000;
+  text-align: center;
+}
+
+.popup h1 {
+  margin: 0;
+  font-size: 80px;
+  color: #FFD700;
+  letter-spacing: 5px;
+}
+
+.popup p {
+  font-size: 28px;
+  color: #B0BEC5;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.popup .close-btn {
+  background-color: #FF5722;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 5px;
+  cursor: none;
+  margin-top: 30px;
+  transition: background-color 0.3s ease;
+}
+
+.popup .close-btn:hover {
+  background-color: #E64A19;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes zoomOut {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+}
+
+.popup.show {
+  display: flex;
+  animation: zoomIn 0.3s ease forwards;
+}
+
+.popup.hide {
+  animation: zoomOut 0.3s ease forwards;
+}
+
+.container-deks {
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            margin-top: 15%;
+            margin-bottom: 0%;
+        }
+
+        .image-section img {
+            width: 100%;
+            height: auto;
+            margin-top: 5px;
+            margin-bottom: 1px;
+            border-radius: 5px;
+        }
+
+        .content-section {
+            margin-top: 15px;
+        }
+
+        h1 {
+            font-size: 20px;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+        }
+
+        .description {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            font-size: 16px;
+            color: #ddd;
+        }
+
+        .additional-info {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            font-size: 14px;
+            color: #999;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+.line {
+    width: 100%;
+    margin-top: 5px;
+    height: 3px;
+    background-color: #555;
+}
+
+.game-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #F1C232;
+    color: white;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.1s, transform 0.1s;
+    box-shadow: 0 6px 0 #D4A017;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: none;
+    margin-bottom: 5px;
+}
+
+.toltip{
+  font-size: 10px;
+  text-align: center;
+  color: #000;
+  font-family: 'Poppins', sans-serif;
+  background-color: #fff;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  position: relative;
+  padding: 10px;
+}
+
+.toltip:after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 10px;
+  border-style: solid;
+  border-color: #fff transparent transparent transparent;
+}
+
+.game-button:hover {
+    box-shadow: 0 3px 0 #D4A017;
+    transform: translateY(3px);
+}
+
+.info-button {
+    padding: 10px 15px;
+    margin: 0px;
+    border-radius: 5px;
+    border: none;
+    font-size: 10px;
+    font-weight: bold;
+    background-color: #F1C232;
+    color: #fff;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.1s, transform 0.1s;
+    box-shadow: 0 6px 0 #D4A017;
+    font-family: 'Poppins', sans-serif;
+    cursor: none;
+    margin-bottom: 10px;
+}
+
+.info-button:hover {
+    box-shadow: 0 3px 0 #D4A017;
+    transform: translateY(3px);
+}
+
+.back-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #FF5722;
+    color: white;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.1s, transform 0.1s;
+    box-shadow: 0 6px 0 #E64A19;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: none;
+    margin-bottom: 5px;
+}
+
+.back-button:hover {
+    box-shadow: 0 3px 0 #E64A19;
+    transform: translateY(3px);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.container-deks {
+  animation: fadeInUp 2.5s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.floating-box {
+  animation: fadeIn 1s ease-in forwards;
+  opacity: 0;
+}
+</style>
+</head>
+<body>
+   <div class="navbar">
+    <div class="navbar-title">PLIXSTUDENTS</div>
+</div>
+</div>
+    <div class="popup" id="popup">
+      <h1 id="popup-hiragana"></h1>
+      <p id="popup-romaji"></p>
+      <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+  </div>
+<div class="container-deks">
+        <div class="content-section">
+          <div class="line"></div>
+            <h1>Huruf hiragana dasar.</h1>
+            <p class="description">Hiragana adalah sistem penulisan dalam bahasa Jepang yang digunakan untuk menuliskan kata-kata asli Jepang.</p>
+            <div class="hiragana-list">
+  <div class="grid">
+    <div onclick="showPopup('あ', 'A')">
+      <span class="hiragana">あ</span>
+      <span class="romaji">A</span>
+    </div>
+    <div onclick="showPopup('い', 'I')">
+      <span class="hiragana">い</span>
+      <span class="romaji">I</span>
+    </div>
+    <div onclick="showPopup('う', 'U')">
+      <span class="hiragana">う</span>
+      <span class="romaji">U</span>
+    </div>
+    <div onclick="showPopup('え', 'E')">
+      <span class="hiragana">え</span>
+      <span class="romaji">E</span>
+    </div>
+    <div onclick="showPopup('お', 'O')">
+      <span class="hiragana">お</span>
+      <span class="romaji">O</span>
+    </div>
+    <div onclick="showPopup('か', 'KA')">
+      <span class="hiragana">か</span>
+      <span class="romaji">KA</span>
+    </div>
+    <div onclick="showPopup('き', 'KI')">
+      <span class="hiragana">き</span>
+      <span class="romaji">KI</span>
+    </div>
+    <div onclick="showPopup('く', 'KU')">
+      <span class="hiragana">く</span>
+      <span class="romaji">KU</span>
+    </div>
+    <div onclick="showPopup('け', 'KE')">
+      <span class="hiragana">け</span>
+      <span class="romaji">KE</span>
+    </div>
+    <div onclick="showPopup('こ', 'KO')">
+      <span class="hiragana">こ</span>
+      <span class="romaji">KO</span>
+    </div>
+    <div onclick="showPopup('さ', 'SA')">
+      <span class="hiragana">さ</span>
+      <span class="romaji">SA</span>
+    </div>
+    <div onclick="showPopup('し', 'SHI')">
+      <span class="hiragana">し</span>
+      <span class="romaji">SHI</span>
+    </div>
+    <div onclick="showPopup('す', 'SU')">
+      <span class="hiragana">す</span>
+      <span class="romaji">SU</span>
+    </div>
+    <div onclick="showPopup('せ', 'SE')">
+      <span class="hiragana">せ</span>
+      <span class="romaji">SE</span>
+    </div>
+    <div onclick="showPopup('そ', 'SO')">
+      <span class="hiragana">そ</span>
+      <span class="romaji">SO</span>
+    </div>
+    <div onclick="showPopup('た', 'TA')">
+      <span class="hiragana">た</span>
+      <span class="romaji">TA</span>
+    </div>
+    <div onclick="showPopup('ち', 'CHI')">
+      <span class="hiragana">ち</span>
+      <span class="romaji">CHI</span>
+    </div>
+    <div onclick="showPopup('つ', 'TSU')">
+      <span class="hiragana">つ</span>
+      <span class="romaji">TSU</span>
+    </div>
+    <div onclick="showPopup('て', 'TE')">
+      <span class="hiragana">て</span>
+      <span class="romaji">TE</span>
+    </div>
+    <div onclick="showPopup('と', 'TO')">
+      <span class="hiragana">と</span>
+      <span class="romaji">TO</span>
+    </div>
+    <div onclick="showPopup('な', 'NA')">
+      <span class="hiragana">な</span>
+      <span class="romaji">NA</span>
+    </div>
+    <div onclick="showPopup('に', 'NI')">
+      <span class="hiragana">に</span>
+      <span class="romaji">NI</span>
+    </div>
+    <div onclick="showPopup('ぬ', 'NU')">
+      <span class="hiragana">ぬ</span>
+      <span class="romaji">NU</span>
+    </div>
+    <div onclick="showPopup('ね', 'NE')">
+      <span class="hiragana">ね</span>
+      <span class="romaji">NE</span>
+    </div>
+    <div onclick="showPopup('の', 'NO')">
+      <span class="hiragana">の</span>
+      <span class="romaji">NO</span>
+    </div>
+    <div onclick="showPopup('は', 'HA')">
+      <span class="hiragana">は</span>
+      <span class="romaji">HA</span>
+    </div>
+    <div onclick="showPopup('ひ', 'HI')">
+      <span class="hiragana">ひ</span>
+      <span class="romaji">HI</span>
+    </div>
+    <div onclick="showPopup('ふ', 'FU')">
+      <span class="hiragana">ふ</span>
+      <span class="romaji">FU</span>
+    </div>
+    <div onclick="showPopup('へ', 'HE')">
+      <span class="hiragana">へ</span>
+      <span class="romaji">HE</span>
+    </div>
+    <div onclick="showPopup('ほ', 'HO')">
+      <span class="hiragana">ほ</span>
+      <span class="romaji">HO</span>
+    </div>
+    <div onclick="showPopup('ま', 'MA')">
+      <span class="hiragana">ま</span>
+      <span class="romaji">MA</span>
+    </div>
+    <div onclick="showPopup('み', 'MI')">
+      <span class="hiragana">み</span>
+      <span class="romaji">MI</span>
+    </div>
+    <div onclick="showPopup('む', 'MU')">
+      <span class="hiragana">む</span>
+      <span class="romaji">MU</span>
+    </div>
+    <div onclick="showPopup('め', 'ME')">
+      <span class="hiragana">め</span>
+      <span class="romaji">ME</span>
+    </div>
+    <div onclick="showPopup('も', 'MO')">
+      <span class="hiragana">も</span>
+      <span class="romaji">MO</span>
+    </div>
+    <div onclick="showPopup('や', 'YA')">
+      <span class="hiragana">や</span>
+      <span class="romaji">YA</span>
+    </div>
+    <div onclick="showPopup('ゆ', 'YU')">
+      <span class="hiragana">ゆ</span>
+      <span class="romaji">YU</span>
+    </div>
+    <div onclick="showPopup('よ', 'YO')">
+      <span class="hiragana">よ</span>
+      <span class="romaji">YO</span>
+    </div>
+    <div onclick="showPopup('ら', 'RA')">
+      <span class="hiragana">ら</span>
+      <span class="romaji">RA</span>
+    </div>
+    <div onclick="showPopup('り', 'RI')">
+      <span class="hiragana">り</span>
+      <span class="romaji">RI</span>
+    </div>
+    <div onclick="showPopup('る', 'RU')">
+      <span class="hiragana">る</span>
+      <span class="romaji">RU</span>
+    </div>
+    <div onclick="showPopup('れ', 'RE')">
+      <span class="hiragana">れ</span>
+      <span class="romaji">RE</span>
+    </div>
+    <div onclick="showPopup('ろ', 'RO')">
+      <span class="hiragana">ろ</span>
+      <span class="romaji">RO</span>
+    </div>
+    <div onclick="showPopup('わ', 'WA')">
+      <span class="hiragana">わ</span>
+      <span class="romaji">WA</span>
+    </div>
+    <div onclick="showPopup('を', 'WO')">
+      <span class="hiragana">を</span>
+      <span class="romaji">WO</span>
+    </div>
+    <div onclick="showPopup('ん', 'N')">
+      <span class="hiragana">ん</span>
+      <span class="romaji">N</span>
+    </div>
+  </div>
+</div>
+            <p class="additional-info">Klik tombol di bawah ini untuk quiz tebak tebakan huruf katakana untuk menambah penghafalan dalam huruf japan.</p>
+            <p class="toltip">Permainan Quiz masih dalam pengembangan.</p>
+            <button class="game-button">Permainan Quiz</button>
+        </div>
+        <div class="line"></div>
+         <div class="image-section">
+            <img src="https://via.placeholder.com/1000x250" alt="Gambar Artikel">
+        </div>
+        <p class="description">huruf hiragana yang ditandai dengan tanda dakuten (") dan maru (°).</p>
+        <div class="hiragana-list">
+  <div class="grid">
+    <div onclick="showPopup('が', 'GA')">
+      <span class="hiragana">が</span>
+      <span class="romaji">GA</span>
+    </div>
+    <div onclick="showPopup('ぎ', 'GI')">
+      <span class="hiragana">ぎ</span>
+      <span class="romaji">GI</span>
+    </div>
+    <div onclick="showPopup('ぐ', 'GU')">
+      <span class="hiragana">ぐ</span>
+      <span class="romaji">GU</span>
+    </div>
+    <div onclick="showPopup('げ', 'GE')">
+      <span class="hiragana">げ</span>
+      <span class="romaji">GE</span>
+    </div>
+    <div onclick="showPopup('ご', 'GO')">
+      <span class="hiragana">ご</span>
+      <span class="romaji">GO</span>
+    </div>
+    <div onclick="showPopup('ざ', 'ZA')">
+      <span class="hiragana">ざ</span>
+      <span class="romaji">ZA</span>
+    </div>
+    <div onclick="showPopup('じ', 'JI')">
+      <span class="hiragana">じ</span>
+      <span class="romaji">JI</span>
+    </div>
+    <div onclick="showPopup('ず', 'ZU')">
+      <span class="hiragana">ず</span>
+      <span class="romaji">ZU</span>
+    </div>
+    <div onclick="showPopup('ぜ', 'ZE')">
+      <span class="hiragana">ぜ</span>
+      <span class="romaji">ZE</span>
+    </div>
+    <div onclick="showPopup('ぞ', 'ZO')">
+      <span class="hiragana">ぞ</span>
+      <span class="romaji">ZO</span>
+    </div>
+    <div onclick="showPopup('だ', 'DA')">
+      <span class="hiragana">だ</span>
+      <span class="romaji">DA</span>
+    </div>
+    <div onclick="showPopup('ぢ', 'JI')">
+      <span class="hiragana">ぢ</span>
+      <span class="romaji">JI</span>
+    </div>
+    <div onclick="showPopup('づ', 'ZU')">
+      <span class="hiragana">づ</span>
+      <span class="romaji">ZU</span>
+    </div>
+    <div onclick="showPopup('で', 'DE')">
+      <span class="hiragana">で</span>
+      <span class="romaji">DE</span>
+    </div>
+    <div onclick="showPopup('ど', 'DO')">
+      <span class="hiragana">ど</span>
+      <span class="romaji">DO</span>
+    </div>
+    <div onclick="showPopup('ば', 'BA')">
+      <span class="hiragana">ば</span>
+      <span class="romaji">BA</span>
+    </div>
+    <div onclick="showPopup('び', 'BI')">
+      <span class="hiragana">び</span>
+      <span class="romaji">BI</span>
+    </div>
+    <div onclick="showPopup('ぶ', 'BU')">
+      <span class="hiragana">ぶ</span>
+      <span class="romaji">BU</span>
+    </div>
+    <div onclick="showPopup('べ', 'BE')">
+      <span class="hiragana">べ</span>
+      <span class="romaji">BE</span>
+    </div>
+    <div onclick="showPopup('ぼ', 'BO')">
+      <span class="hiragana">ぼ</span>
+      <span class="romaji">BO</span>
+    </div>
+    <div onclick="showPopup('ぱ', 'PA')">
+      <span class="hiragana">ぱ</span>
+      <span class="romaji">PA</span>
+    </div>
+    <div onclick="showPopup('ぴ', 'PI')">
+      <span class="hiragana">ぴ</span>
+      <span class="romaji">PI</span>
+    </div>
+    <div onclick="showPopup('ぷ', 'PU')">
+      <span class="hiragana">ぷ</span>
+      <span class="romaji">PU</span>
+    </div>
+    <div onclick="showPopup('ぺ', 'PE')">
+      <span class="hiragana">ぺ</span>
+      <span class="romaji">PE</span>
+    </div>
+    <div onclick="showPopup('ぽ', 'PO')">
+      <span class="hiragana">ぽ</span>
+      <span class="romaji">PO</span>
+    </div>
+  </div>
+</div>
+<div class="line"></div>
+         <div class="image-section">
+            <img src="https://via.placeholder.com/1000x250" alt="Gambar Artikel">
+        </div>
+        <p class="description">daftar lengkap huruf hiragana kecil dengan partikel huruf kecil yang menghasilkan bunyi kombinasi.</p>
+        <div class="hiragana-list">
+  <div class="grid">
+    <div onclick="showPopup('きゃ', 'KYA')">
+      <span class="hiragana">きゃ</span>
+      <span class="romaji">KYA</span>
+    </div>
+    <div onclick="showPopup('きゅ', 'KYU')">
+      <span class="hiragana">きゅ</span>
+      <span class="romaji">KYU</span>
+    </div>
+    <div onclick="showPopup('きょ', 'KYO')">
+      <span class="hiragana">きょ</span>
+      <span class="romaji">KYO</span>
+    </div>
+    <div onclick="showPopup('しゃ', 'SHA')">
+      <span class="hiragana">しゃ</span>
+      <span class="romaji">SHA</span>
+    </div>
+    <div onclick="showPopup('しゅ', 'SHU')">
+      <span class="hiragana">しゅ</span>
+      <span class="romaji">SHU</span>
+    </div>
+    <div onclick="showPopup('しょ', 'SHO')">
+      <span class="hiragana">しょ</span>
+      <span class="romaji">SHO</span>
+    </div>
+    <div onclick="showPopup('ちゃ', 'CHA')">
+      <span class="hiragana">ちゃ</span>
+      <span class="romaji">CHA</span>
+    </div>
+    <div onclick="showPopup('ちゅ', 'CHU')">
+      <span class="hiragana">ちゅ</span>
+      <span class="romaji">CHU</span>
+    </div>
+    <div onclick="showPopup('ちょ', 'CHO')">
+      <span class="hiragana">ちょ</span>
+      <span class="romaji">CHO</span>
+    </div>
+    <div onclick="showPopup('にゃ', 'NYA')">
+      <span class="hiragana">にゃ</span>
+      <span class="romaji">NYA</span>
+    </div>
+    <div onclick="showPopup('にゅ', 'NYU')">
+      <span class="hiragana">にゅ</span>
+      <span class="romaji">NYU</span>
+    </div>
+    <div onclick="showPopup('にょ', 'NYO')">
+      <span class="hiragana">にょ</span>
+      <span class="romaji">NYO</span>
+    </div>
+    <div onclick="showPopup('ひゃ', 'HYA')">
+      <span class="hiragana">ひゃ</span>
+      <span class="romaji">HYA</span>
+    </div>
+    <div onclick="showPopup('ひゅ', 'HYU')">
+      <span class="hiragana">ひゅ</span>
+      <span class="romaji">HYU</span>
+    </div>
+    <div onclick="showPopup('ひょ', 'HYO')">
+      <span class="hiragana">ひょ</span>
+      <span class="romaji">HYO</span>
+    </div>
+    <div onclick="showPopup('みゃ', 'MYA')">
+      <span class="hiragana">みゃ</span>
+      <span class="romaji">MYA</span>
+    </div>
+    <div onclick="showPopup('みゅ', 'MYU')">
+      <span class="hiragana">みゅ</span>
+      <span class="romaji">MYU</span>
+    </div>
+    <div onclick="showPopup('みょ', 'MYO')">
+      <span class="hiragana">みょ</span>
+      <span class="romaji">MYO</span>
+    </div>
+    <div onclick="showPopup('りゃ', 'RYA')">
+      <span class="hiragana">りゃ</span>
+      <span class="romaji">RYA</span>
+    </div>
+    <div onclick="showPopup('りゅ', 'RYU')">
+      <span class="hiragana">りゅ</span>
+      <span class="romaji">RYU</span>
+    </div>
+    <div onclick="showPopup('りょ', 'RYO')">
+      <span class="hiragana">りょ</span>
+      <span class="romaji">RYO</span>
+    </div>
+  </div>
+</div>
+  <div class="line"></div>
+<p class="additional-info">Klik tombol di bawah ini untuk masukan untuk update kedepan dan apa ada kekurangan yang ingin kami perbaiki dan update.</p>
+            <center><button class="info-button" onclick="sendEmail()">BUAT MASUKAN SARAN</button>
+            <button class="info-button" onclick="refreshPage()">REFRESH MENGECEK UPDATE</button></center>
+            <button class="back-button" onclick="goBack()">Kembali ke halaman utama</button>
+        </div>
+        <div class="line"></div>
+</div>
+</div>
+    <div class="floating-box">
+    Jangan lupa geser dan klik refresh untuk mengecek update.
+</div>
+   <script>
+    function showPopup(hiragana, romaji) {
+  const popup = document.getElementById('popup');
+  document.getElementById('popup-hiragana').textContent = hiragana;
+  document.getElementById('popup-romaji').textContent = romaji;
+  popup.classList.remove('hide');
+  popup.style.display = 'block';
+  popup.classList.add('show');
+}
+
+function closePopup() {
+  const popup = document.getElementById('popup');
+  popup.classList.remove('show');
+  popup.classList.add('hide');
+
+  popup.addEventListener('animationend', function() {
+    if (popup.classList.contains('hide')) {
+      popup.style.display = 'none';
+    }
+  }, { once: true });
+}
+  </script>
+  <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+
+        function sendEmail() {
+            const email = "plixsuport@gmail.com";
+            const subject = "Chat from PLIXSTUDENTS";
+            const body = "Please find the chat information here.";
+            window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        }
+
+        function refreshPage() {
+            location.reload();
+        }
+    </script>
+   
+</body>
+</html>
