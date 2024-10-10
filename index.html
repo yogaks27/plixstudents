@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="refresh" content="120">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #3E4451;
+    color: white;
+    display: flex;
+    user-select: none;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    background-color: #2D2F3A;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+}
+
+.navbar-title {
+    flex-grow: 1;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    text-align: center;
+    font-size: 25px;
+    font-family: "Lilita One", sans-serif;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 15px;
+    margin-bottom: 0px;
+    flex-grow: 1;
+}
+
+.card {
+    display: flex;
+    justify-content: space-between;
+    user-select: none;
+    outline: none;
+    margin-bottom: 15px;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    background-color: #F7AB42;
+    transition: box-shadow 0.2s, transform 0.2s;
+    box-shadow: 0 8px 0 #D69338;
+}
+
+.card:active {
+    transform: translateY(4px);
+    box-shadow: 0 4px 0 #D69338;
+}
+
+.cardl {
+    display: flex;
+    justify-content: space-between;
+    user-select: none;
+    outline: none;
+    margin-bottom: 15px;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    background-color: #9285FF;
+    transition: box-shadow 0.2s, transform 0.2s;
+    box-shadow: 0 8px 0 #7368CC;
+}
+
+.cardl:active {
+    transform: translateY(4px);
+    box-shadow: 0 4px 0 #7368CC;
+}
+
+.card-text h2 {
+    font-size: 24px;
+    z-index: 2;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 20;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+    opacity: 0; 
+    transition: opacity 0.1s ease; 
+}
+
+.modal.show {
+    display: flex; 
+    opacity: 1; 
+}
+
+.modal-content {
+    background-color: #2D2F3A;
+    margin: 15% auto;
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.1s, transform 0.1s;
+    box-shadow: 0 10px 0 #1A1C23;
+    border-radius: 5px;
+    width: 85%;
+    font-size: 15px;
+}
+
+.close {
+    color: white;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.floating-box {
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    width: 95%;
+    transform: translateX(-50%);
+    background-color: #FFD700;
+    color: black;
+    padding: 5px;
+    font-size: 10px;
+    border-radius: 5px;
+    z-index: 15;
+    text-align: center;
+}
+
+.social-btn {
+    color: white;
+    border: none;
+    padding: 10px 10px;
+    cursor: none;
+    border-radius: 5px;
+    width: 80px;
+    margin: 5px;
+}
+
+.social-buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.whatsapp {
+    background-color: #25D366;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.1s, transform 0.1s;
+    box-shadow: 0 6px 0 #1FAE54;
+}
+
+.telegram {
+    background-color: #0088CC;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.1s, transform 0.1s;
+    box-shadow: 0 6px 0 #0072A3;
+}
+
+.discord {
+    background-color: #7289DA;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.1s, transform 0.1s;
+    box-shadow: 0 6px 0 #5B6B9A;
+}
+
+.modal-content a {
+    color: #fff;
+    cursor: none;
+}
+
+.modal-content h1 {
+    color: #fff;
+    font-size: 20px;
+}
+
+.modal-content a:hover, a:active, a:focus {
+    color: inherit;
+    outline: none;
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.tablinks {
+    padding: 10px 20px;
+    margin: 5px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: none;
+    font-size: 10px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    cursor: none;
+    background-color: #2D2F3A;
+    color: white;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.1s, transform 0.1s;
+    box-shadow: 0 6px 0 #1A1C23;
+}
+
+.tablinks:active {
+    box-shadow: 0 2px 0 #1A1C23;
+    color: #FFD700;
+    transform: translateY(4px);
+}
+
+.tablinks.active {
+    box-shadow: 0 2px 0 #1A1C23;
+    background-color: #2D2F3A;
+    color: #FFD700;
+    transform: translateY(4px);
+}
+
+.tablinks:hover {
+    background-color: #2D2F3A;
+    box-shadow: 0 3px 0 #1A1C23;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+}
+
+.tabcontent {
+    display: none;
+    width: 100%;
+    max-width: 800px;
+}
+
+.tabcontent.active {
+    display: block;
+}
+
+#refresh-icon {
+    transition: transform 0.5s;
+}
+
+.rotate {
+    animation: spin 0.5s forwards;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.motivation-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0px auto;
+            margin-bottom: 10px;
+            margin-top: 85px;
+            width: 95%;
+            background-color: #282C34;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .motivational-text {
+            font-size: 15px;
+            font-weight: bold;
+            color: #fff;
+            z-index: 2;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            animation: fadeIn 1s ease forwards;
+   opacity: 0;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+.line {
+    width: 100%;
+    margin-top: 5px;
+    height: 3px;
+    background-color: #555;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.content, .tabs, .motivation-box {
+  animation: fadeIn 0.8s ease-in forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.floating-box {
+  animation: fadeIn 0.3s ease-in forwards;
+  opacity: 0;
+}
+
+.info-button {
+    padding: 10px 30px;
+    margin: 0px;
+    border-radius: 5px;
+    border: none;
+    font-size: 10px;
+    font-weight: bold;
+    background-color: #FFD700;
+    color: #000;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.1s, transform 0.1s;
+    box-shadow: 0 6px 0 #F1C232;
+    font-family: 'Poppins', sans-serif;
+    cursor: none;
+    transition: background-color 0.3s ease;
+}
+
+.info-button:hover {
+    box-shadow: 0 3px 0 #F1C232;
+    transform: translateY(3px);
+}
+
+.footer {
+    text-align: center;
+    padding: 20px;
+}
+
+.footer-text {
+    font-family: "Lilita One", sans-serif;
+    font-size: 20px;
+    color:#ddd;
+}
+</style>
+</head>
+<body>
+   <div class="navbar">
+    <div class="navbar-title">PLIXSTUDENTS</div>
+</div>
+</div>
+
+</div>
+    <div class="floating-box">
+    Jangan lupa geser, baca info dan refresh untuk mengecek update.
+</div>
+    
+<div class="motivation-box">
+    <div class="motivational-text">SELAMAT DATANG</div>
+  </div>
+  <div class="ls-content">
+            <div class="flex items-center justify-center h-screen">
+              <center>
+            <button class="info-button" id="infoBtn" title="Info">INFORMASI</button>
+            <button class="info-button" onclick="sendEmail()">MASUKAN</button>
+            <button class="info-button" onclick="refreshPage()">REFRESH</button></center>
+        </div>
+    </div>
+    <div class="tabs">
+    <button class="tablinks" title="Tampilkan semua" onclick="openTab(event, 'Semua')">SEMUA</button>
+    <button class="tablinks" title="Tampilkan alfabet" onclick="openTab(event, 'Alfabet')">ALFABET</button>
+    <button class="tablinks" title="Tampilkan kata" onclick="openTab(event, 'Kata')">KATA</button>
+    <button class="tablinks" title="Tampilkan kalimat" onclick="openTab(event, 'Kalimat')">KALIMAT</button>
+</div>
+<div class="content">
+    <div id="Alfabet" class="tabcontent">
+        <div class="card" onclick="window.location.href='data/hiragana.html';" style="cursor: none;">
+            <div class="card-text">
+                <h2>Huruf - hiragana.</h2>
+                <span class="progress">Hiragana: Digunakan untuk menulis kata-kata asli Jepang.</span>
+            </div>
+        </div>
+        
+        <div class="card" onclick="window.location.href='data/angka.html';" style="cursor: none;">
+            <div class="card-text">
+                <h2>Angka - Jepang.</h2>
+                <span class="progress">Angka dasar dalam bahasa jepang cara bacanya.</span>
+            </div>
+        </div>
+
+        <div class="cardl" onclick="window.location.href='data/katakana.html';" style="cursor: none;">
+            <div class="card-text">
+                <h2>Huruf - katakana.</h2>
+                <span class="progress">Katakana: Digunakan untuk menulis kata-kata serapan dari bahasa asing.</span>
+            </div>
+        </div>
+        
+        <div class="cardl" onclick="window.location.href='data/kanji.html';" style="cursor: none;">
+            <div class="card-text">
+                <h2>Kanji - jepang.</h2>
+                <span class="progress">Kanji adalah karakter tulisan Jepang yang diadaptasi dari tulisan Tiongkok dan digunakan untuk menyampaikan makna dalam satu simbol.</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="Kata" class="tabcontent">
+        <div class="card" onclick="window.location.href='data/kata-d.html';" style="cursor: none;">
+            <div class="card-text">
+                <h2>Kata - dasar.</h2>
+                <span class="progress">Kata - dasar sehari hari dan lainya.</span>
+            </div>
+        </div>
+
+        <div class="cardl" onclick="window.location.href='data/kata-l.html';" style="cursor: none;">
+            <div class="card-text">
+                <h2>Kata - lanjutan.</h2>
+                <span class="progress">Kata - lanjutan wajib jika ingin bekerja atau ke jepang.</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="Kalimat" class="tabcontent">
+        <div class="card" onclick="window.location.href='data/kalimat-d.html';" style="cursor: none;">
+            <div class="card-text">
+                <h2>Kalimat - dasar.</h2>
+                <span class="progress">Kalimat - dasar sehari hari dan lainya.</span>
+            </div>
+        </div>
+
+        <div class="cardl" onclick="window.location.href='data/kalimat-l.html';" style="cursor: none;">
+            <div class="card-text">
+                <h2>Kalimat - lanjutan.</h2>
+                <span class="progress">Kalimat - lanjutan wajib jika ingin bekerja atau ke jepang.</span>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+    <p class="footer-text">PLIXSTUDENTS</p>
+</footer>
+   <div class="modal" id="myModal">
+    <div class="modal-content">
+        <center>
+           <h1>Belajar Bahasa Jepang.</h1>
+        <p>Isi info untuk aplikasi belajar bahasa Jepang. Aplikasi ini dirancang untuk membantu pengguna belajar kosakata, tata bahasa, dan frasa sehari-hari dalam bahasa Jepang dengan cara yang interaktif dan menyenangkan.</p>
+        <br>
+        <h1>©Credits.</h1>
+        <p>Di buat oleh individual PLIXTeam's™ oleh @Yogaks @Vxploit ikuti komunitas kami dengan mengikuti group official PLIXTeam™</p>
+            <div class="social-buttons">
+                <a href="https://chat.whatsapp.com/IdwUXRtxlUwH0vZgEnezCE" target="_blank">
+                    <button class="social-btn whatsapp">WhatsApp</button>
+                </a>
+                <a href="https://web.telegram.org/" target="_blank">
+                    <button class="social-btn telegram">Telegram</button>
+                </a>
+                <a href="https://discord.gg/EA8FymQNuJ" target="_blank">
+                    <button class="social-btn discord">Discord</button>
+                </a>
+            </div>
+            <div class="line"></div>
+            <a class="close" id="closeBtn">Klik di luar kotak untuk menutup</a>
+        </center>
+    </div>
+</div>
+    <script>
+     function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+        tabcontent[i].classList.remove("active");
+    }
+
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    if (tabName === 'Semua') {
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "block";
+            tabcontent[i].classList.add("active");
+        }
+    } else {
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+    }
+
+    if (evt) {
+        evt.currentTarget.className += " active";
+    } else {
+        document.getElementsByClassName("tablinks")[0].className += " active";
+    }
+}
+
+// Menampilkan tab 'Semua' saat halaman dimuat
+window.onload = function() {
+    openTab(null, 'Semua');
+};
+
+// Modal Functionality
+var modal = document.getElementById("myModal");
+var infoBtn = document.getElementById("infoBtn");
+var closeBtn = document.getElementById("closeBtn");
+
+infoBtn.onclick = function() {
+    modal.classList.add("show");
+}
+
+closeBtn.onclick = function() {
+    modal.classList.remove("show");
+}
+
+window.onclick = function(event) {
+    if (event.target === modal) {
+        modal.classList.remove("show");
+    }
+}
+
+// Refresh Page Functionality
+function refreshPage() {
+    const icon = document.getElementById('refresh-icon');
+
+    setTimeout(() => {
+        location.reload();
+    }, 500);
+}
+
+// Motivational Text Change Functionality
+const texts = ["SELAMAT DATANG", "CAPAILAH IMPIAN DAN KEINGINAN", "BERMIMPI BELAJAR CAPAILAH","AYO BISA IMPIANMU MENUNGGU"];
+let currentIndex = 0;
+const textElement = document.querySelector('.motivational-text');
+
+function changeText() {
+    textElement.style.animation = 'fadeOut 1s ease forwards';
+
+    setTimeout(() => {
+        currentIndex = (currentIndex + 1) % texts.length;
+        textElement.textContent = texts[currentIndex];
+        textElement.style.animation = 'fadeIn 1s ease forwards';
+    }, 1000);
+
+    setTimeout(changeText, 5000);
+}
+
+changeText();
+   </script>
+   <script>
+        function goBack() {
+            window.history.back();
+        }
+
+        function sendEmail() {
+            const email = "plixsuport@gmail.com";
+            const subject = "Chat from PLIXSTUDENTS";
+            const body = "Please find the chat information here.";
+            window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        }
+
+        function refreshPage() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>
